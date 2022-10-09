@@ -1,26 +1,19 @@
 package Seminar1OOP;
 
-public class Engine {
+public class Engine extends BaseState{
 
-    private Boolean work;
-
-    public void start() {
-        this.work = true;
-        System.out.println("Двигатель запущен!");
+    public Engine() {
+        super.off();
+        super.on();
+        super.state = false;
     }
-
-    public void stop() {
-        this.work = false;
-        System.out.println("Двигатель остановлен!");
-    }
-
     public void throttleUp(int level) {
-        if (this.work) {
+        if (super.state) {
             System.out.println("Дросель открыт %d" + level);
         }
     }
 
     public Boolean getWork() {
-        return work;
+        return super.state;
     }
 }
