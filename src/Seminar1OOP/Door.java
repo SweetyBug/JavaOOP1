@@ -1,14 +1,12 @@
 package Seminar1OOP;
 
-public class Wheel extends BaseState{
-    public Wheel() {
+public class Door extends BaseState{
+    public Door() {
         super.off();
         super.on();
         super.state = false;
     }
-
-    public boolean getRotate() {
+    public boolean getState() {
         return super.state;
     }
-
 }
