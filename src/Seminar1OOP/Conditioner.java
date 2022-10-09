@@ -1,16 +1,12 @@
 package Seminar1OOP;
 
-public class Conditioner {
-    enum State{
-        On, Off
+public class Conditioner extends BaseState{
+    public Conditioner() {
+        super.off();
+        super.on();
+        super.state = false;
     }
-    private State state;
-    public void state() {
-        if(state == State.Off) {
-            state = State.On;
-            System.out.println("Кондиционер включен");
-        } else {
-            System.out.println("Кондиционер выключен");
-        }
+    public boolean getState() {
+        return super.state;
     }
 }

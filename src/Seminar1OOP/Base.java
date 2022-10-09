@@ -6,47 +6,82 @@ public class Base {
     private Wheel wheel2;
     private Wheel wheel3;
     private Wheel wheel4;
-    private Transmission transmission;
     private Door doorLeft1;
     private Door doorLeft2;
     private Door doorRight1;
     private Door doorRight2;
     private Door doorBack;
+    private Transmission transmission;
     private Conditioner conditioner;
-
+    private Steering steering;
+    public String left = "налево";
+    public String right = "направо";
+    public String straight = "прямо";
     public Base() {
         engine = new Engine();
         wheel1 = new Wheel();
         wheel2 = new Wheel();
         wheel3 = new Wheel();
         wheel4 = new Wheel();
-        doorBack = new Door();
+        doorRight2 = new Door();
+        doorRight1 = new Door();
         doorLeft2 = new Door();
         doorLeft1 = new Door();
-        doorRight1 = new Door();
-        doorRight2 = new Door();
+        doorBack = new Door();
         conditioner = new Conditioner();
         transmission = new Transmission();
+        steering = new Steering();
     }
-
-    public void drive() {
-        if (engine.getWork()) {
-            transmission.switchGear(1);
-            wheel4.rotate();
-            wheel2.rotate();
-            wheel3.rotate();
-            wheel1.rotate();
-        }
-    }
-
-    public void openDoor() {
-        if(doorRight2.getState()) {
-            doorRight2.off();
-            System.out.println("Дверь закрыта");
+    public void powerConditioner(){
+        if(conditioner.getState()){
+            conditioner.off();
+            System.out.println("Кондицинер выключен");
         } else {
-            doorRight2.on();
-            System.out.println("Дверь открыта");
+            conditioner.off();
+            System.out.println("кондиционер выключен");
         }
+    }
+    public void wheels(boolean n) {
+        if (n) {
+            wheel1.on();
+            wheel2.on();
+            wheel3.on();
+            wheel4.on();
+            System.out.println("Машина в движении");
+        } else {
+            wheel1.off();
+            wheel2.off();
+            wheel3.off();
+            wheel4.off();
+            System.out.println("Машина остановлена");
+        }
+    }
+    public void drive() {
+        int gearNum = transmission.getGearNum();
+        if (engine.getWork()) {
+            if(gearNum == 0) {
+                wheels(engine.getWork());
+                transmission.switchGear(gearNum+1);
+            } else if (gearNum > 0 && gearNum < 5){
+                transmission.switchGear(gearNum+1);
+            } else {
+                wheels(engine.getWork());
+            }
+        }
+    }
+    public void blockDoor(){
+        doorRight2.off();
+        doorRight1.off();
+        doorLeft1.off();
+        doorLeft2.off();
+        System.out.println("Двери заблокированы");
+    }
+    public void unblockDoor() {
+        doorRight2.on();
+        doorRight1.on();
+        doorLeft1.on();
+        doorLeft2.on();
+        System.out.println("Двери разблокированы");
     }
     public void power() {
         if (!(engine.getWork())) {
@@ -55,7 +90,21 @@ public class Base {
         } else {
             engine.off();
             System.out.println("Двигатель выключен");
+            if (wheel1.getRotate()){
+                wheels(engine.getWork());
+            }
+        }
+    }
+    public void unDrive() {
+        int gearNum = transmission.getGearNum();
+        if(engine.getWork() && gearNum !=0) {
+            transmission.switchGear(gearNum-1);
+        } else if (engine.getWork() && gearNum == 0){
+            wheels(false);
         }
     }
 
+    public void steeringPosition(String s) {
+        steering.turn(s);
+    }
 }
